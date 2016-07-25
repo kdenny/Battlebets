@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html>
+    {% include 'bbapp/base.html' %}
+	<style>
+    	.container{
+      		background-color: #36A882;
+    	}
+		.row {
+    		color: #FFFFFF;
+			font-size: 28px;
+		}
+		body{
+      		background-color: #36A882;
+    	}
+  </style>
+    <body>
+          <div class="container" id="input-form">
+            {% csrf_token %}
+            {% load bootstrap %}
+
+          <div class="col-sm-12 text-center">
+                <img src="http://i.imgur.com/ZwmPb22.png" height="20" >
+
+                </div>
+
+            <div class="col-sm-4 text-center">
+                <a href="/bbapp/games_list"><img src="http://i.imgur.com/fE8axoZ.png" height="175" ></a>
+
+                </div>
+
+            <div class="col-sm-4 text-center">
+
+            </div>
+
+            <div class="col-sm-4 text-center">
+                <a href="/social"><img src="http://i.imgur.com/odtmVdk.png" height="175" ></a>
+
+                </div>
+
+           <div class="col-sm-12 text-center">
+                <img src="http://i.imgur.com/ZwmPb22.png" height="125" >
+
+                </div>
+
+          <br>
+          <br>
+          <br>
+
+
+          </div>
+
+    <script>
+
+
+    $(document).ready(function() {
+        $("select").select2();
+    });
+
+    </script>
+
+
+
+    </body>
+</html>

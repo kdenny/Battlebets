@@ -1,0 +1,282 @@
+<html>
+{% include 'bbapp/base.html' %}
+
+<style>
+    .container{
+        background-color: #36A882;
+    }
+    .row {
+        /*color: #FFFFFF;*/
+        font-size: 14px;
+    }
+
+    .span {
+        /*color: #FFFFFF;*/
+        font-size: 14px;
+    }
+
+    .toolate {
+        color:red;
+        font-size: 14px;
+    }
+
+    .over {
+        color:red;
+        font-size: 14px;
+    }
+
+    @media (max-width: @screen-sm) {
+    .modal-body label{font-size: 14px;}
+    }
+
+    body{
+        background-color: #36A882;
+    }
+</style>
+
+<body>
+
+    <div class="container">
+    <section class="row">
+        <div class="col-sm-12 col-md-12 text-center">
+            <div class="panel panel-default">
+                <div class="panel-heading">MLB games</div>
+                <div class="panel-body">
+
+                    {% for s in games %}
+
+                    {% if s.home_team != "" %}
+
+                    {% if s.status == "Upcoming" %}
+
+                    <div class="col-sm-6 col-md-6 text-center">
+                            <div class="col-sm-7 col-md-7">
+                                {{ s.home_team}}
+                            </div>
+
+                            <div class="col-sm-2 col-md-2">
+                                {{ s.home_odds}}
+                            </div>
+
+                            <div class="col-sm-3 col-md-3">
+                                {{ s.game_time}}
+                            </div>
+
+                            <div class="col-sm-7 col-md-7">
+                                {{ s.away_team}}
+
+                            </div>
+
+                            <div class="col-sm-2 col-md-2">
+                                {{ s.away_odds}}
+                            </div>
+
+                            <div class="col-sm-3 col-md-3">
+                                <a data-home="{{ s.home_team }}  {{ s.home_odds }}" data-hteam="{{ s.home_team }}" data-hodds="{{ s.home_odds }}" data-away="{{ s.away_team }} {{ s.away_odds }}" data-ateam="{{ s.away_team }}" data-aodds="{{ s.away_odds }}" title="Add this item" class="open-AddBookDialog btn btn-info btn-xs" href="#addBookDialog">Bet</a>
+                            </div>
+
+
+                            <div class="col-xs-12" style="height:30px;"></div>
+
+                    </div>
+
+                    {% elif s.status == "In Progress" %}
+                    <div class="toolate">
+
+                    <div class="col-sm-6 col-md-6 text-left">
+                            <div class="col-sm-8 col-md-8">
+                               Home: {{ s.home_team}}
+                            </div>
+
+                            <div class="col-sm-3 col-md-3">
+                                 In Progress
+                            </div>
+
+                            <div class="col-sm-1 col-md-1">
+                            </div>
+
+                            <div class="col-sm-8 col-md-8">
+                                Away: {{ s.away_team}}
+
+                            </div>
+
+                            <!--<div class="col-sm-3 col-md-3">-->
+                                <!--{{ s.away_odds}}-->
+                            <!--</div>-->
+
+
+                            <div class="col-sm-3 col-md-3">
+                                <a data-home="{{ s.home_team }}  {{ s.home_odds }}" data-hteam="{{ s.home_team }}" data-hodds="{{ s.home_odds }}" data-away="{{ s.away_team }} {{ s.away_odds }}" data-ateam="{{ s.away_team }}" data-aodds="{{ s.away_odds }}" title="Add this item" class="open-AddBookDialog btn btn-info btn-xs" href="#addBookDialog">View Score</a>
+                            </div>
+
+                            <!--<div class="col-sm-3 col-md-3">-->
+                                <!--<a data-home="{{ s.home_team }}  {{ s.home_odds }}" data-hteam="{{ s.home_team }}" data-hodds="{{ s.home_odds }}" data-away="{{ s.away_team }} {{ s.away_odds }}" data-ateam="{{ s.away_team }}" data-aodds="{{ s.away_odds }}" title="Add this item" class="open-AddBookDialog btn btn-info btn-xs" href="#addBookDialog">Bet</a>-->
+                            <!--</div>-->
+
+
+                            <div class="col-xs-12" style="height:30px;"></div>
+
+                    </div>
+                    </div>
+
+                    {% elif s.status == "Final" %}
+                    <div class="over">
+
+                    <div class="col-sm-6 col-md-6 text-left">
+                            <div class="col-sm-8 col-md-8">
+                               Home: {{ s.home_team}}
+                            </div>
+
+                            <div class="col-sm-3 col-md-3">
+                                 Fnal
+                            </div>
+
+                            <div class="col-sm-1 col-md-1">
+                            </div>
+
+                            <div class="col-sm-8 col-md-8">
+                                Away: {{ s.away_team}}
+
+                            </div>
+
+                            <!--<div class="col-sm-3 col-md-3">-->
+                                <!--{{ s.away_odds}}-->
+                            <!--</div>-->
+
+
+                            <div class="col-sm-3 col-md-3">
+                                <a data-home="{{ s.home_team }}  {{ s.home_odds }}" data-hteam="{{ s.home_team }}" data-hodds="{{ s.home_odds }}" data-away="{{ s.away_team }} {{ s.away_odds }}" data-ateam="{{ s.away_team }}" data-aodds="{{ s.away_odds }}" title="Add this item" class="open-AddBookDialog btn btn-info btn-xs" href="#addBookDialog">View Score</a>
+                            </div>
+
+                            <!--<div class="col-sm-3 col-md-3">-->
+                                <!--<a data-home="{{ s.home_team }}  {{ s.home_odds }}" data-hteam="{{ s.home_team }}" data-hodds="{{ s.home_odds }}" data-away="{{ s.away_team }} {{ s.away_odds }}" data-ateam="{{ s.away_team }}" data-aodds="{{ s.away_odds }}" title="Add this item" class="open-AddBookDialog btn btn-info btn-xs" href="#addBookDialog">Bet</a>-->
+                            <!--</div>-->
+
+
+                            <div class="col-xs-12" style="height:30px;"></div>
+
+                    </div>
+                    </div>
+
+                    {% endif %}
+
+                    {% endif %}
+
+                    {% endfor %}
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+    </div>
+
+
+    <div class="modal fade" id="addBookDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+        <form id="bet_form" method="post" action="/bbapp/games_list/">
+            {% csrf_token %}
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Place Bet</h4>
+          </div>
+          <div class="modal-body">
+              <section class="row">
+              <div class="col-sm-6 col-md-6 text-center">
+                  <div class="radio">
+                      <label id="lbltipAddedComment">Option 1</label>
+                      <br>
+                      <input type="radio" name="betSelection" id="betHome" value="home" checked>
+                  </div>
+              </div>
+
+
+              <div class="col-sm-6 col-md-6 text-center">
+                  <div class="radio">
+                      <label id="lbltipAddedComment2">Option 2</label>
+                      <br>
+                      <input type="radio" name="betSelection" id="betAway" value="away">
+                  </div>
+              </div>
+
+
+              </section>
+              <section class="row">
+                  <div class="col-xs-12" style="height:40px;"></div>
+                  <div class="col-sm-6 col-md-6 text-center">
+                    <label id="pickusrlabel">Against who?</label>
+                  </div>
+                  <div class="col-sm-6 col-md-6 text-center">
+                      <select name="users" id="user-select" style="width: 100%" required>
+                                    <option selected="selected" disabled value="">Select a user</option>
+                                    <option data-divider="true" disabled>-----Friends-----</option>
+                                    <option value="brendanjwills">Brendan Wills</option>
+                                    <option value="tylergordon">Tyler Gordon</option>
+                                    <option value="kevindenny">Kevin Denny</option>
+
+                      </select>
+                  </div>
+
+              </section>
+
+              <section class="row">
+                  <div class="col-xs-12" style="height:25px;"></div>
+                  <div class="col-sm-6 col-md-6 text-center">
+                    <label id="selectamountlabel">For what amount?</label>
+                  </div>
+                  <div class="col-sm-6 col-md-6 text-center">
+                      <label>$</label><input type="text" name="betval" id="betval" value="" />
+                  </div>
+              </section>
+
+          </div>
+          <div class="modal-footer">
+              <p>
+
+
+              </p>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Continue Bet</button>
+          </div>
+          </form>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
+
+
+    <script>
+
+        $(document).on("click", ".open-AddBookDialog", function (e) {
+
+        e.preventDefault();
+
+        var _self = $(this);
+
+        var home = _self.data('home');
+        var hometeam = _self.data('hteam');
+        document.getElementById('lbltipAddedComment').innerHTML = home;
+
+        var away = _self.data('away');
+        var awayteam = _self.data('ateam');
+        document.getElementById('lbltipAddedComment2').innerHTML = away;
+
+
+        $("#betHome").val(hometeam);
+//        var myCookId = _self.data('away');
+        $("#betAway").val(awayteam);
+
+        $(_self.attr('href')).modal('show');
+        });
+
+    </script>
+
+
+</body>
+</html>
+
+
+

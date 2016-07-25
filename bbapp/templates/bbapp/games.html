@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html>
+    {% include 'bbapp/base.html' %}
+	<style>
+    	.container{
+      		background-color: #36A882;
+    	}
+        .leaflet-container {  /* all maps */
+        width:  auto;
+        height: 75vh;
+        }
+		/*.row {*/
+    		/*color: #FFFFFF;*/
+			/*font-size: 12px;*/
+		/*}*/
+		body{
+      		background-color: #36A882;
+    	}
+  </style>
+    <head>
+	</head>
+    <body>
+    <section class="row">
+        <div class="col-sm-4 col-md-4 text-center">
+            </div>
+        <div class="col-sm-4 col-md-4 text-center">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                MLB   NBA   NFL   NHL
+        <!--<div class="col-sm-1 col-md-1 text-center">-->
+            <!--MLB-->
+            <!--</div>-->
+        <!--<div class="col-sm-1 col-md-1 text-center">-->
+            <!--NBA-->
+            <!--</div>-->
+        <!--<div class="col-sm-1 col-md-1 text-center">-->
+            <!--NFL-->
+            <!--</div>-->
+        <!--<div class="col-sm-1 col-md-1 text-center">-->
+            <!--NHL-->
+            <!--</div>-->
+            </div>
+        </div>
+        </div>
+        </section>
+    {% if data %}
+    <section class="row">
+        <div class="col-sm-12 col-md-12 text-center">
+            <div class="panel panel-default">
+                <div class="panel-heading">MLB games</div>
+                <div class="panel-body">
+                    {% for datum in data %}
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                        <div class="col-sm-3 col-md-3 text-right">
+                            {{ datum.home }}
+                            <!--<div class="radio">-->
+                              <!--<label><input type="radio" name="optradio"></label>-->
+                            <!--</div>-->
+                        </div>
+                        <div class="col-sm-3 col-md-3 text-left">
+                            {{ datum.MATCH_ODDS.home }}
+                            </div>
+                        <div class="col-sm-3 col-md-3 text-right">
+                            {{ datum.away }}
+                            <!--<div class="radio">-->
+                              <!--<label><input type="radio" name="optradio"></label>-->
+                            <!--</div>-->
+                            </div>
+                        <div class="col-sm-3 col-md-3 text-left">
+                            {{ datum.MATCH_ODDS.away }}
+                            </div>
+                        <div class="col-sm-4 col-md-4 text-left">
+                            </div>
+                        <div class="col-sm-4 col-md-4 text-center">
+                            <a data-id="ISBN" title="Add this item" class="open-AddBookDialog btn btn-primary" href="#addBookDialog">Bet</a>
+                        </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+
+    </section>
+    {% endif %}
+
+
+    <div class="modal fade" id="addBookDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+          </div>
+          <div class="modal-body">
+            <input type="text" name="bookId" id="bookId" value="" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
+
+
+    <script>
+
+    $(document).on("click", ".open-AddBookDialog", function (e) {
+
+	e.preventDefault();
+
+	var _self = $(this);
+
+	var myBookId = _self.data('id');
+	$("#bookId").val(myBookId);
+
+	$(_self.attr('href')).modal('show');
+});
+
+    </script>
+
+
+
+    </body>
+</html>

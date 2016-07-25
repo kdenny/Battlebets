@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <style>
+    .container-fluid{
+      background-color: #36A882;
+    }
+    .collapse{
+      background-color: #36A882;
+      color: #36A882;
+    }
+    .nav.navbar-nav.navbar-right li a {
+      color: #FFFFFF;
+    }
+    .nav.navbar-nav.navbar-left li a {
+      color: #FFFFFF;
+    }
+    .myNavbar {
+    position: relative;
+    }
+    .myNavbar.nav {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-bottom: -10px;
+    }
+    body{
+      background-color: #36A882;
+    }
+
+    .navbar-default .navbar-nav .open .dropdown-menu>li>a,.navbar-default .navbar-nav .open .dropdown-menu {
+    background-color: #3344ff;
+    color:#ffffff;
+  }
+
+
+    /* Links inside the dropdown */
+    .nav.navbar-nav.navbar-right.dropdown a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+
+
+    /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+    .show {display:block;}
+  </style>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="">
+    <meta name="author" content="A map for finding travel time-optimized restaurants between two points">
+
+    <title> Battlebets </title>
+    <script src="/static/bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/bower_components/d3/d3.min.js"></script>
+    <script type="text/javascript" src="/static/bower_components/bootstrap-select/js/bootstrap-select.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2-rc.1/js/select2.min.js"></script>
+{#    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>#}
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+    <!--<script type="text/javascript" src="https://rawgit.com/wenzhixin/bootstrap-table/master/src/bootstrap-table.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js"></script>-->
+    <!--<script type="text/javascript" src="http://mottie.github.io/tablesorter/js/jquery.tablesorter.js"></script>-->
+    <!--<script type="text/javascript" src="http://mottie.github.io/tablesorter/addons/pager/jquery.tablesorter.pager.min.js"></script>-->
+    <script type="text/javascript" src="/static/fancybox/jquery.fancybox.js"></script>
+
+
+
+
+    <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/static/bower_components/bootstrap-social/bootstrap-social.css">
+    <link rel="stylesheet" href="/static/bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2-rc.1/css/select2.min.css" />
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css">
+    <!--<link rel="stylesheet" href="https://rawgit.com/wenzhixin/bootstrap-table/master/src/bootstrap-table.css">-->
+    <link rel="stylesheet" href="/static/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+    <link rel='shortcut icon' href='/static/img/favicon.ico' type='image/x-icon'/>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css">
+    <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css">
+    <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css">
+    <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.css">
+    <link rel="stylesheet" href="/static/leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.css">
+{#    <link rel="stylesheet" href="/static/css/app.css">#}
+
+
+
+  </head>
+
+
+
+  <body>
+
+
+    {% load notifications_tags %}
+
+    <nav class="navbar navbar-default" role="navigation" id="myNavbar">
+{#      <a href="/" class="pull-left"><img src="http://i.imgur.com/B1Da8c5.png" height="45" ></a>#}
+
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+          <a href="/" class="pull-left"><img src="http://i.imgur.com/ofSAbSc.png" class="img-responsive" width=""></a>
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+
+
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+{#        <ul  class="nav navbar-nav navbar-left align-bottom">#}
+{#            <li class="hidden-xs"><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="sidebar-toggle-btn"><span class="glyphicon glyphicon-triangle-bottom"></span></a></li>#}
+{#        </ul>#}
+
+          <ul class="nav navbar-nav navbar-right">
+          {% if not user.is_authenticated %}
+            <li><a href="/bbapp/register">Register <span class="sr-only">(current)</span></a></li>
+
+            <li><a href="/bbapp/login">Login</a></li>
+          {% endif %}
+
+          </ul>
+
+          <ul  class="nav navbar-nav navbar-right">
+              {% if user.is_authenticated %}
+              <li><a>Hello {{user}}</a></li>
+
+              <li class="dropdown">
+
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">{% unseen_notifications user %}
+                <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    {% for notif in user.notifications.all %}
+
+                        {% if notif.bet.user2 == user %}
+
+                            {% if notif.bet.bet_status == 'Proposed' %}
+
+                                <li><a href="/bbapp/view_proposals/"> {{notif.sender}} wants to bet ${{ notif.bet.bet_value }} </a></li>
+
+                            {% endif %}
+
+                        {% endif %}
+
+
+                        {% if notif.bet.user1 == user %}
+
+                            {% if not notif.seen %}
+
+                                {% if notif.bet.bet_status == 'Accepted' %}
+
+                                    <li><a href="/bbapp/view_proposals/"> {{notif.sender}} accepted your bet of ${{ notif.bet.bet_value }} </a></li>
+
+                                {% endif %}
+
+                                {% if notif.bet.bet_status == 'Declined' %}
+
+                                    <li><a href="/bbapp/view_proposals/"> {{notif.sender}} declined your bet of ${{ notif.bet.bet_value }} </a></li>
+
+                                {% endif %}
+
+                            {% endif %}
+
+                        {% endif %}
+
+
+
+                    {% endfor %}
+
+                </ul>
+
+              </li>
+
+              <li><a href="/bbapp/profile/">Your Profile</a></li>
+              <li><a href="/bbapp/logout/">Logout</a></li>
+              {% endif %}
+
+          </ul>
+          
+          
+          <!--</li>-->
+         <!--</ul>-->
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+  <script>
+      $("#sidebar-toggle-btn").click(function() {
+          $("#sidebar").toggle();
+{#          map.invalidateSize();#}
+          return false;
+      });
+
+      function myFunction() {
+            document.getElementById("myNotifications").classList.toggle("show");
+        }
+
+      window.onclick = function(event) {
+          if (!event.target.matches('.notificationBtn')) {
+
+            var dropdowns = document.getElementsByClassName("notifications-list");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+              var openDropdown = dropdowns[i];
+              if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+              }
+            }
+          }
+        }
+
+
+  </script>
+  </body>
+</html>

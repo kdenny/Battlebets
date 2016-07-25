@@ -1,0 +1,193 @@
+<html>
+{% include 'bbapp/base.html' %}
+
+<style>
+    .container{
+        background-color: #36A882;
+    }
+    .row {
+        /*color: #FFFFFF;*/
+        font-size: 18px;
+    }
+
+    .span {
+        /*color: #FFFFFF;*/
+        font-size: 16px;
+    }
+
+    .toolate {
+        color:red;
+        font-size: 16px;
+    }
+
+    @media (max-width: @screen-sm) {
+    .modal-body label{font-size: 14px;}
+    }
+
+    body{
+        background-color: #36A882;
+    }
+</style>
+
+<body>
+
+    {% if proposals %}
+    <header class="header-image">
+        <div class="headline">
+            <div class="container">
+                <h1>Proposed Bets</h1>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- Page Content -->
+    <div class="container">
+
+        {% for s in proposals %}
+
+        <hr class="featurette-divider">
+
+        <!-- First Featurette -->
+        <div class="featurette" id="about">
+            <!--<img class="featurette-image img-circle img-responsive pull-right" src="http://placehold.it/500x500">-->
+            <h2 class="featurette-heading">Proposal From {{ s.sender }}
+                <!--<span class="text-muted">Will Catch Your Eye</span>-->
+            </h2>
+            <p class="lead">{{s.sender}} wants to bet ${{ s.bet.bet_value }} on {{ s.bet.bet_selection }} in {{ s.bet.game.away_team}} at {{ s.bet.game.home_team}} on {{ s.bet.game.date}} </p>
+            <p>
+                <form id="status_form" method="post" action="/bbapp/view_proposals/">
+                {% csrf_token %}
+                <input type="hidden" value="{{ s.bet.id }}" name="betgame">
+                <button type="submit" value='Accepted' name='newstatus' class="btn btn-primary">Accept</button>      <button type="submit" value='Declined' name='newstatus' class="btn btn-primary">Decline</button>
+                </form>
+            </p>
+        </div>
+
+        {% endfor %}
+        {% endif %}
+
+        {% if user_placed or accepted %}
+    <header class="header-image">
+        <div class="headline">
+            <div class="container">
+                <h1>Accepted Bets</h1>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- Page Content -->
+    <div class="container">
+
+        {% for s in accepted %}
+
+        <hr class="featurette-divider">
+
+        <!-- First Featurette -->
+        <div class="featurette" id="about2">
+            <!--<img class="featurette-image img-circle img-responsive pull-right" src="http://placehold.it/500x500">-->
+            <h2 class="featurette-heading">Bet with {{ s.bet.user1 }}
+                <!--<span class="text-muted">Will Catch Your Eye</span>-->
+            </h2>
+            <p class="lead"> You accepted a ${{ s.bet.bet_value }} bet with {{s.bet.user1}} against {{ s.bet.bet_selection }} in {{ s.bet.game.away_team}} at {{ s.bet.game.home_team}} on {{ s.bet.game.date}} </p>
+            <p>
+                <!--<form id="status_form2" method="post" action="/bbapp/view_proposals/">-->
+                <!--{% csrf_token %}-->
+                <!--<input type="hidden" value="{{ s.bet.id }}" name="betgame">-->
+                <!--<button type="submit" value='Accepted' name='newstatus' class="btn btn-primary">Accept</button>      <button type="submit" value='Declined' name='newstatus' class="btn btn-primary">Decline</button>-->
+                <!--</form>-->
+            </p>
+        </div>
+
+        {% endfor %}
+
+        {% for s in user_placed %}
+
+        <hr class="featurette-divider">
+
+        <!-- First Featurette -->
+        <div class="featurette" id="about2">
+            <!--<img class="featurette-image img-circle img-responsive pull-right" src="http://placehold.it/500x500">-->
+            <h2 class="featurette-heading">Bet with {{ s.bet.user2 }}
+                <!--<span class="text-muted">Will Catch Your Eye</span>-->
+            </h2>
+            <p class="lead"> {{s.bet.user2}} accepted your bet of ${{ s.bet.bet_value }} on {{ s.bet.bet_selection }} in {{ s.bet.game.away_team}} at {{ s.bet.game.home_team}} on {{ s.bet.game.date}} </p>
+
+            <p>
+                <!--<form id="status_form2" method="post" action="/bbapp/view_proposals/">-->
+                <!--{% csrf_token %}-->
+                <!--<input type="hidden" value="{{ s.bet.id }}" name="betgame">-->
+                <!--<button type="submit" value='Accepted' name='newstatus' class="btn btn-primary">Accept</button>      <button type="submit" value='Declined' name='newstatus' class="btn btn-primary">Decline</button>-->
+                <!--</form>-->
+            </p>
+        </div>
+
+        {% endfor %}
+
+        {% endif %}
+
+        {% if declined %}
+    <header class="header-image">
+        <div class="headline">
+            <div class="container">
+                <h1>Declined Bets</h1>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- Page Content -->
+    <div class="container">
+
+        {% for s in declined %}
+
+        <hr class="featurette-divider">
+
+        <!-- First Featurette -->
+        <div class="featurette" id="about3">
+            <!--<img class="featurette-image img-circle img-responsive pull-right" src="http://placehold.it/500x500">-->
+            <h2 class="featurette-heading"> {{ s.bet.user2 }} declined your proposal
+                <!--<span class="text-muted">Will Catch Your Eye</span>-->
+            </h2>
+            <p class="lead">{{ s.bet.user2 }} declined your bet of ${{ s.bet.bet_value }} on {{ s.bet.bet_selection }} in {{ s.bet.game.away_team}} at {{ s.bet.game.home_team}} on {{ s.bet.game.date}} </p>
+            <p>
+                <!--<form id="status_form2" method="post" action="/bbapp/view_proposals/">-->
+                <!--{% csrf_token %}-->
+                <!--<input type="hidden" value="{{ s.bet.id }}" name="betgame">-->
+                <!--<button type="submit" value='Accepted' name='newstatus' class="btn btn-primary">Accept</button>      <button type="submit" value='Declined' name='newstatus' class="btn btn-primary">Decline</button>-->
+                <!--</form>-->
+            </p>
+        </div>
+
+        {% endfor %}
+        {% endif %}
+
+        <hr class="featurette-divider">
+
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Your Website 2014</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+
+
+
+
+
+    <script>
+
+
+    </script>
+
+
+</body>
+</html>
+
+
+
