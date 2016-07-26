@@ -3,6 +3,21 @@ import json
 from pprint import pprint
 import lxml
 from bs4 import BeautifulSoup
+
+
+import os
+import sys
+path = '/home/kdenny37/Battlebets/'
+if path not in sys.path:
+    sys.path.append(path)
+
+os.chdir(path)
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'Battlebets.settings'
+
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
+
 from bbapp.models import *
 from datetime import datetime, timedelta
 
@@ -80,8 +95,10 @@ def fixScores(currentScores, sport):
                             if gbet.bet_selection == gbet.game.home_team:
                                 if winp == 'Home':
                                     gbet.bet_status = 'user1win'
+                                    print("User 1 won bet")
                                 else:
                                     gbet.bet_status = 'user2win'
+                                    print("User 2 won bet")
                             elif gbet.bet_selection == gbet.game.away_team:
                                 if winp == 'Home':
                                     gbet.bet_status = 'user2win'
@@ -140,16 +157,16 @@ def request():
     url = 'http://espn.go.com/mlb/bottomline/scores'.format(league)
 
 
-    print u'Querying {0} ...'.format(url)
+    # print u'Querying {0} ...'.format(url)
 
     conn = urllib2.urlopen(url, None)
-    
+
     try:
         soup = BeautifulSoup(conn, 'html.parser')
         games = []
         print()
  #       pprint(soup)
-        
+
     finally:
         conn.close()
 
@@ -173,19 +190,19 @@ def chefThatSoup(soup):
 
     for game in gamesList:
         gameR = {}
-        
+
         gameN = game.split('%20')
-        
+
         extracount = 0
 
         # print(gameN)
         # print("")
 
         if gameN[0].split('=')[1] != '120&amp;mlb;_s_stamp':
-            
-            
+
+
             ## Process Away team
-            
+
             if gameN[0].split('=')[1].replace("^","") not in longNames:
                 gameR['Away_Team'] = gameN[0].split('=')[1]
             else:
@@ -245,8 +262,8 @@ def chefThatSoup(soup):
                     gameR['Home_Team'] = gameN[atloc] + ' ' + gameN[(atloc+1)]
                     gameR['Game Time'] = gameN[(atloc+2)].replace("(","") + ' ' + gameN[(atloc+3)] + ' ' + gameN[(atloc+4)].split(")")[0]
 
-                
-                    
+
+
             if '^' in gameR['Home_Team']:
                 gameR['Status'] = 'Final'
                 gameR['Winner'] = 'Home'
@@ -257,8 +274,8 @@ def chefThatSoup(soup):
 
             if gameR['Status'] == 'Final':
                 gameR['Inning'] = 'Final'
-                
-                    
+
+
 
             gameScores.append(gameR)
 

@@ -30,7 +30,7 @@ import requests
 from pprint import pprint
 
 from bbapp.models import *
-from bbapp.forms import UserForm, UserProfileForm, BetForm
+from bbapp.forms import UserForm, UserProfileForm
 
 
 
