@@ -90,8 +90,10 @@ def fixScores(currentScores, sport):
                     gamebets = Bet.objects.filter(game=pkey)
 
                     for gbet in gamebets:
+                        new = 0
                         ## Update all bets with the winner of bet
                         if gbet.bet_status == 'Accepted':
+                            new = 1
                             if gbet.bet_selection == gbet.game.home_team:
                                 if winp == 'Home':
                                     gbet.bet_status = 'user1win'
@@ -120,21 +122,23 @@ def fixScores(currentScores, sport):
                             bet_notice2 = user2.notifications.create(bet=gbet,
                                                                    sender=user1)
 
-                        bet_notice = Notification()
-                        bet_notice.bet = gbet
-                        bet_notice.user = gbet.user1
-                        bet_notice.sender = gbet.user2
-                        bet_notice.save()
+                        if new == 1:
 
-                        user1.notifications.add(bet_notice)
+                            bet_notice = Notification()
+                            bet_notice.bet = gbet
+                            bet_notice.user = gbet.user1
+                            bet_notice.sender = gbet.user2
+                            bet_notice.save()
 
-                        bet_notice2 = Notification()
-                        bet_notice2.bet = gbet
-                        bet_notice2.user = gbet.user2
-                        bet_notice2.sender = gbet.user1
-                        bet_notice2.save()
+                            user1.notifications.add(bet_notice)
 
-                        user2.notifications.add(bet_notice2)
+                            bet_notice2 = Notification()
+                            bet_notice2.bet = gbet
+                            bet_notice2.user = gbet.user2
+                            bet_notice2.sender = gbet.user1
+                            bet_notice2.save()
+
+                            user2.notifications.add(bet_notice2)
 
 
 
