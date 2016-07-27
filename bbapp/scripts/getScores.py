@@ -7,16 +7,16 @@ from bs4 import BeautifulSoup
 
 import os
 import sys
-path = '/home/kdenny37/Battlebets/'
-if path not in sys.path:
-    sys.path.append(path)
-
-os.chdir(path)
-
-os.environ['DJANGO_SETTINGS_MODULE'] = 'Battlebets.settings'
-
-from django.core.wsgi import get_wsgi_application
-application = get_wsgi_application()
+# path = '/home/kdenny37/Battlebets/'
+# if path not in sys.path:
+#     sys.path.append(path)
+#
+# os.chdir(path)
+#
+# os.environ['DJANGO_SETTINGS_MODULE'] = 'Battlebets.settings'
+#
+# from django.core.wsgi import get_wsgi_application
+# application = get_wsgi_application()
 
 from bbapp.models import *
 from datetime import datetime, timedelta

@@ -2,53 +2,196 @@
 
 <html>
     {% include 'bbapp/base.html' %}
+    <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Righteous">
+    <link rel="stylesheet" href="static/fonts/font-awesome.min.css">
+    <!--<link rel="stylesheet" href="static/css/user.css">-->
 	<style>
-    	.container{
-      		background-color: #36A882;
-    	}
-		.row {
-    		color: #FFFFFF;
-			font-size: 28px;
-		}
-		body{
-      		background-color: #36A882;
-    	}
+
+
+@media (min-width:992px) {
+  .hero .get-it{
+    text-align:center;
+    margin-top:50px;
+  }
+    }
+
+    @media (max-width:992px) {
+      .hero .get-it{
+        text-align:center;
+      }
+    }
+
+    @media (max-width:992px) {
+      .hero .phone-preview{
+        text-align:center;
+      }
+    }
+
+    .hero .get-it h1, .hero .get-it p{
+      color:#fff;
+      text-shadow:2px 2px 3px rgba(0,0,0,0.3);
+      margin-bottom:20px;
+    }
+
+    .btn{
+      text-align:center;
+      margin-bottom:40px;
+      text-shadow:none;
+      height:50px;
+      width:150px;
+      font-size:20px;
+    }
+
+    .icon-feature{
+      text-align:center;
+    }
+
+    .icon-feature .glyphicon{
+      font-size:60px;
+    }
+
+    section.features{
+      background-color:#369;
+      padding:40px 0;
+      color:#fff;
+    }
+
+    .features h2{
+      color:#fff;
+    }
+
+    .features .icon-features{
+      margin-top:15px;
+    }
+
+    section.testimonials{
+      margin:50px 0;
+    }
+
+    .site-footer{
+      padding:20px 0;
+      text-align:center;
+    }
+
+    @media (min-width:768px) {
+      .site-footer h5{
+        text-align:left;
+      }
+    }
+
+    .site-footer h5{
+      color:inherit;
+      font-size:20px;
+    }
+
+    .site-footer .social-icons a:hover{
+      opacity:1;
+    }
+
+    .site-footer .social-icons a{
+      display:inline-block;
+      width:32px;
+      border:none;
+      font-size:20px;
+      border-radius:50%;
+      margin:4px;
+      color:#fff;
+      text-align:center;
+      background-color:#798FA5;
+      height:32px;
+      opacity:0.8;
+      line-height:32px;
+    }
+
+    @media (min-width:768px) {
+      .site-footer .social-icons{
+        text-align:right;
+      }
+    }
+
+    h1{
+      font-family:'Righteous';
+    }
+
+    .hero{
+      background:url(static/img/stadium.jpg) no-repeat center !important;
+      background-size:cover;
+      border:none;
+    }
+
   </style>
     <body>
-          <div class="container" id="input-form">
-            {% csrf_token %}
-            {% load bootstrap %}
 
-          <div class="col-sm-12 text-center">
-                <img src="http://i.imgur.com/ZwmPb22.png" height="20" >
+        <div class="jumbotron hero">
+            <div class="col-md-8 col-md-offset-2 get-it">
+                <h1>Battlebets </h1>
+                <p>Welcome to the future of peer-to-peer sports betting.</p>
+                <p></p>
+            </div>
+            <div class="container">
+                <div class="row">
+                    {% if not user.is_authenticated %}
+                        <div class="col-md-5 col-md-offset-3 col-md-push-2">
+                            <a class="btn btn-primary" role="button" href="/bbapp/login">Login</a>
+                        </div>
+
+                    {% else %}
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-5 col-md-offset-2 col-md-push-2"><a class="btn btn-primary" role="button" href="/bbapp/games_list">View Games</a><a class="btn btn-primary" role="button" href="/bbapp/bet_history" style="margin-left: 20px">View Bets</a></div>
+                        </div>
+                    </div>
+
+                    {% endif %}
 
                 </div>
 
-            <div class="col-sm-4 text-center">
-                <a href="/bbapp/games_list"><img src="http://i.imgur.com/fE8axoZ.png" height="175" ></a>
-
-                </div>
-
-            <div class="col-sm-4 text-center">
 
             </div>
-
-            <div class="col-sm-4 text-center">
-                <a href="/social"><img src="http://i.imgur.com/odtmVdk.png" height="175" ></a>
-
+        </div>
+        <footer class="site-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h5>Mobile App © 2016</h5></div>
+                    <div class="col-sm-6 social-icons"><a href="#"><i class="fa fa-facebook"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-instagram"></i></a></div>
                 </div>
-
-           <div class="col-sm-12 text-center">
-                <img src="http://i.imgur.com/ZwmPb22.png" height="125" >
-
-                </div>
-
-          <br>
-          <br>
-          <br>
+            </div>
+        </footer>
 
 
-          </div>
+          <!--<div class="col-sm-12 text-center">-->
+                <!--<img src="http://i.imgur.com/ZwmPb22.png" height="20" >-->
+
+                <!--</div>-->
+
+            <!--<div class="col-sm-4 text-center">-->
+                <!--<a href="/bbapp/games_list"><img src="http://i.imgur.com/fE8axoZ.png" height="175" ></a>-->
+
+                <!--</div>-->
+
+            <!--<div class="col-sm-4 text-center">-->
+
+            <!--</div>-->
+
+            <!--<div class="col-sm-4 text-center">-->
+                <!--<a href="/social"><img src="http://i.imgur.com/odtmVdk.png" height="175" ></a>-->
+
+                <!--</div>-->
+
+           <!--<div class="col-sm-12 text-center">-->
+                <!--<img src="http://i.imgur.com/ZwmPb22.png" height="125" >-->
+
+                <!--</div>-->
+
+          <!--<br>-->
+          <!--<br>-->
+          <!--<br>-->
+
+
+          <!--</div>-->
 
     <script>
 
