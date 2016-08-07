@@ -98,7 +98,27 @@ def view_proposals(request):
         return resp
 
 
+    return resp
 
+def bet_history(request):
+
+    outstanding_bets = Bet.objects.filter(user2=request.user,bet_status='Proposed')
+
+    current_bets = Bet.objects.filter(user1=request.user,bet_status='Accepted') | Bet.objects.filter(user1=request.user,bet_status='Proposed') | Bet.objects.filter(user2=request.user,bet_status='Accepted')
+
+    won_bets = Bet.objects.filter(user1=request.user,bet_status='user1win') | Bet.objects.filter(user2=request.user,bet_status='user2win')
+
+    lost_bets = Bet.objects.filter(user1=request.user,bet_status='user2win') | Bet.objects.filter(user2=request.user,bet_status='user1win')
+
+    historic = won_bets | lost_bets
+
+    pprint("Yes, {}".format(len(historic)))
+
+    gamedata = { "outstanding" : outstanding_bets, "current" : current_bets, "historic" : historic}
+
+
+
+    resp =  render_to_response('bbapp/bet_history.html', gamedata, context_instance=RequestContext(request))
 
 
 

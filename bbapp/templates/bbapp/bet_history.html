@@ -1,0 +1,270 @@
+<html>
+{% include 'bbapp/base.html' %}
+
+<style>
+    .container{
+        background-color: #36A882;
+    }
+    .row {
+        /*color: #FFFFFF;*/
+        font-size: 18px;
+    }
+
+    .span {
+        /*color: #FFFFFF;*/
+        font-size: 16px;
+    }
+
+    .toolate {
+        color:red;
+        font-size: 16px;
+    }
+
+    @media (max-width: @screen-sm) {
+    .modal-body label{font-size: 14px;}
+    }
+
+    body{
+        background-color: #36A882;
+    }
+</style>
+
+<body>
+
+    {% if outstanding %}
+
+    <div class="container">
+    <section class="row">
+        <div class="col-sm-12 col-md-12 text-center">
+            <div class="panel panel-default">
+                <div class="panel-heading">Outstanding Proposals</div>
+                <div class="panel-body">
+
+                {% for s in outstanding %}
+
+                <div class="col-sm-6 col-md-6 text-center">
+                <div class="panel panel-default">
+                    <div class="panel-heading">From {{ s.user1 }}</div>
+                    <div class="panel-body">
+
+                            <div class="col-sm-8 col-md-8 text-left">
+                                <p>
+                                {% if s.bet_selection == s.game.away_team %}
+                                <i>(you)</i> <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                {% endif %}
+                                {{ s.game.home_team}} &nbsp; &nbsp; {{ s.game.home_odds}}
+                                <br>
+                                {% if s.bet_selection == s.game.home_team %}
+                                <i>(you)</i> <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                {% endif %}
+                                {{ s.game.away_team}}
+                                </p>
+                            </div>
+
+                            <div class="col-sm-4 col-md-4">
+                                Accept
+                                <br>
+                                Decline
+                            </div>
+
+
+                            <div class="col-xs-12" style="height:30px;"></div>
+
+                    </div>
+                    </div>
+                </div>
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    </section>
+
+    <section class="row">
+        <div class="col-sm-12 col-md-12 text-center">
+            <div class="panel panel-default">
+                <div class="panel-heading">Current Bets</div>
+                <div class="panel-body">
+
+                {% for s in current %}
+
+                <div class="col-sm-6 col-md-6 text-center">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ s.game.date }}</div>
+                    <div class="panel-body">
+
+                            <div class="col-sm-12 col-md-12 text-left">
+                                <p>
+                                {% if s.user1 == user %}
+                                {% if s.bet_selection == s.game.home_team %}
+                                <i>(you)</i> <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                {% endif %}
+                                {{ s.game.home_team}} &nbsp; &nbsp; {{ s.game.home_odds}}
+                                <br>
+                                {% if s.bet_selection == s.game.away_team %}
+                                <i>(you)</i> <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                {% endif %}
+                                {{ s.game.away_team}}
+                                {% endif %}
+
+                                {% if s.user2 == user %}
+                                {% if s.bet_selection == s.game.away_team %}
+                                <i>(you)</i> <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                {% endif %}
+                                {{ s.game.home_team}} &nbsp; &nbsp; {{ s.game.home_odds}}
+                                <br>
+                                {% if s.bet_selection == s.game.home_team %}
+                                <i>(you)</i> <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                {% endif %}
+                                {{ s.game.away_team}}
+                                {% endif %}
+                                </p>
+                            </div>
+
+
+
+                            <div class="col-xs-12" style="height:30px;"></div>
+
+                    </div>
+                    </div>
+                </div>
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    </section>
+
+    <section class="row">
+        <div class="col-sm-12 col-md-12 text-center">
+            <div class="panel panel-default">
+                <div class="panel-heading">Historic Bets</div>
+                <div class="panel-body">
+
+
+
+                <div class="col-sm-6 col-md-6 text-center">
+                <h1>Wins</h1>
+                {% for s in historic %}
+                {% if s.user1 == user and s.bet_status = 'user1win' or s.user2 == user and s.bet_status = 'user2win' %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ s.game.date }}</div>
+                    <div class="panel-body">
+
+                            <div class="col-sm-12 col-md-12 text-left">
+                                <p>
+                                {% if s.user1 == user %}
+                                {% if s.bet_selection == s.game.home_team %}
+                                <i>(you)</i> <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                {% endif %}
+                                {{ s.game.home_team}} &nbsp; &nbsp; {{ s.game.home_odds}}
+                                <br>
+                                {% if s.bet_selection == s.game.away_team %}
+                                <i>(you)</i> <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                {% endif %}
+                                {{ s.game.away_team}}
+                                {% endif %}
+
+                                {% if s.user2 == user %}
+                                {% if s.bet_selection == s.game.away_team %}
+                                <i>(you)</i> <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                {% endif %}
+                                {{ s.game.home_team}} &nbsp; &nbsp; {{ s.game.home_odds}}
+                                <br>
+                                {% if s.bet_selection == s.game.home_team %}
+                                <i>(you)</i> <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                {% endif %}
+                                {{ s.game.away_team}}
+                                {% endif %}
+                                </p>
+                            </div>
+
+
+
+                            <div class="col-xs-12" style="height:30px;"></div>
+
+                    </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+
+
+
+
+                <div class="col-sm-6 col-md-6 text-center">
+                <h1>Losses</h1>
+                {% for s in historic %}
+                {% if s.user2 == user and s.bet_status = 'user1win' or s.user1 == user and s.bet_status = 'user2win' %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ s.game.date }}</div>
+                    <div class="panel-body">
+
+                            <div class="col-sm-12 col-md-12 text-left">
+                                <p>
+                                {% if s.user1 == user %}
+                                {% if s.bet_selection == s.game.home_team %}
+                                <i>(you)</i> <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                {% endif %}
+                                {{ s.game.home_team}} &nbsp; &nbsp; {{ s.game.home_odds}}
+                                <br>
+                                {% if s.bet_selection == s.game.away_team %}
+                                <i>(you)</i> <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                {% endif %}
+                                {{ s.game.away_team}}
+                                {% endif %}
+
+                                {% if s.user2 == user %}
+                                {% if s.bet_selection == s.game.away_team %}
+                                <i>(you)</i> <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                {% endif %}
+                                {{ s.game.home_team}} &nbsp; &nbsp; {{ s.game.home_odds}}
+                                <br>
+                                {% if s.bet_selection == s.game.home_team %}
+                                <i>(you)</i> <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                {% endif %}
+                                {{ s.game.away_team}}
+                                {% endif %}
+                                </p>
+                            </div>
+
+
+
+                            <div class="col-xs-12" style="height:30px;"></div>
+
+                    </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    </section>
+
+
+    </div>
+
+
+
+    {% endif %}
+
+
+
+
+
+
+
+    <script>
+
+
+    </script>
+
+
+</body>
+</html>
+
+
+
