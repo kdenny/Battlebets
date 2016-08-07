@@ -70,6 +70,9 @@ def fixScores(currentScores, sport):
                 if gamt.status != 'Historic' and gamt.status != 'Final':
                     gamt.home_short = cs['Home_Short']
                     gamt.away_short = cs['Away_Short']
+                    if gamt.status != 'Upcoming':
+                        gamt.home_score = cs['Home_Score']
+                        gamt.away_score = cs['Away_Score']
                     gamt.status = cs['Status']
                     if cs['Status'] == 'Upcoming':
                         gamt.game_time = cs['Game Time']
@@ -77,6 +80,8 @@ def fixScores(currentScores, sport):
 
                 if cs['Status'] == 'Final':
                     ## Process games that have ended
+                    gamt.home_score = cs['Home_Score']
+                    gamt.away_score = cs['Away_Score']
                     gamt.status = 'Historic'
                     gamt.save()
                     winp = cs['Winner']
