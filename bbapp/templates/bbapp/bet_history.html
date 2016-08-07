@@ -31,9 +31,10 @@
 
 <body>
 
-    {% if outstanding %}
+
 
     <div class="container">
+        {% if outstanding %}
     <section class="row">
         <div class="col-sm-12 col-md-12 text-center">
             <div class="panel panel-default">
@@ -79,6 +80,8 @@
         </div>
     </div>
     </section>
+
+    {% endif %}
 
     <section class="row">
         <div class="col-sm-12 col-md-12 text-center">
@@ -246,11 +249,7 @@
 
 
     </div>
-
-
-
-    {% endif %}
-
+    
 
 
 
