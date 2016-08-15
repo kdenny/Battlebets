@@ -212,7 +212,9 @@
                                     <option selected="selected" disabled value="">Select a user</option>
                                     <option data-divider="true" disabled>-----Friends-----</option>
                                     {% for s in users %}
+                                    {% if s.first_name != 'Austin' or user.username == 'kevindenny' %}
                                     <option value={{ s.username }}>{{ s.first_name }} {{ s.last_name }}</option>
+                                    {% endif %}
                                     {% endfor %}
                       </select>
                   </div>
