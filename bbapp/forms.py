@@ -19,7 +19,7 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('address',)
+        fields = ('firstname','lastname')
 
 
 # class BetForm(forms.ModelForm):

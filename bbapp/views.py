@@ -175,7 +175,9 @@ def games_list(request):
             print("Showing yesterday's games")
             today = yesterday.strftime("%m/%d/%Y")
         games = Game.objects.filter(date=today)
-        gamedata = { "games" : games, "league" : info}
+        users = User.objects.all()
+        print(users)
+        gamedata = { "games" : games, "league" : info, "users" : users}
 
         resp =  render_to_response("bbapp/games_list.html", gamedata, context_instance=RequestContext(request))
 

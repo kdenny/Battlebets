@@ -211,10 +211,9 @@
                       <select name="users" id="user-select" style="width: 100%" required>
                                     <option selected="selected" disabled value="">Select a user</option>
                                     <option data-divider="true" disabled>-----Friends-----</option>
-                                    <option value="brendanjwills">Brendan Wills</option>
-                                    <option value="tylergordon">Tyler Gordon</option>
-                                    <option value="kevindenny">Kevin Denny</option>
-
+                                    {% for s in users %}
+                                    <option value={{ s.username }}>{{ s.first_name }} {{ s.last_name }}</option>
+                                    {% endfor %}
                       </select>
                   </div>
 

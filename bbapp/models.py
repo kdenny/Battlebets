@@ -14,7 +14,9 @@ class UserProfile(models.Model):
     # This line is required. Links UserProfile to a User model instance.
     user = models.OneToOneField(User)
 
-    address = models.CharField(max_length=200, blank=True, default='')
+    # address = models.CharField(max_length=200, blank=True, default='')
+    firstname = models.CharField(max_length=200, blank=True, default='')
+    lastname = models.CharField(max_length=200, blank=True, default='')
 
     # Override the __unicode__() method to return out something meaningful!
     def __unicode__(self):
