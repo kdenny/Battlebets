@@ -37,6 +37,7 @@ class Game(models.Model):
     home_odds = models.CharField(max_length=5, default='')
     home_short = models.CharField(max_length=5, default='')
     home_score = models.IntegerField(null=True)
+    over_under = models.FloatField(null=True)
     away_team = models.CharField(max_length=200, default='')
     away_odds = models.CharField(max_length=5, default='')
     away_short = models.CharField(max_length=5, default='')

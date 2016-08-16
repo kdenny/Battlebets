@@ -10,6 +10,8 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
+from django.core.mail import EmailMessage
+
 
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -188,10 +190,14 @@ def games_list(request):
         madebet = False
         betselect = request.POST.get('betSelection')
         opponent = request.POST.get('users')
+        bettype = request.POST.get('bettype')
         betamount = request.POST.get('betval')
         user1 = request.user
 
-        makeBet(betselect, opponent, betamount, user1)
+        makeBet(betselect, opponent, betamount, bettype, user1)
+        # email = EmailMessage('title', 'body', to=['kdenny37@gmail.com'])
+        # email.send()
+
 
         madebet = True
 

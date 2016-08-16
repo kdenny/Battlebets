@@ -72,7 +72,7 @@
                             </div>
 
                             <div class="col-sm-3 col-md-3">
-                                <a data-home="{{ s.home_team }}  {{ s.home_odds }}" data-hteam="{{ s.home_team }}" data-hodds="{{ s.home_odds }}" data-away="{{ s.away_team }} {{ s.away_odds }}" data-ateam="{{ s.away_team }}" data-aodds="{{ s.away_odds }}" title="Add this item" class="open-AddBookDialog btn btn-info btn-xs" href="#addBookDialog">Bet</a>
+                                <a data-home="{{ s.home_team }}  {{ s.home_odds }}" data-hteam="{{ s.home_team }}" data-hodds="{{ s.home_odds }}" data-away="{{ s.away_team }} {{ s.away_odds }}" data-overunder="{{ s.over_under }}" data-ateam="{{ s.away_team }}" data-aodds="{{ s.away_odds }}" title="Add this item" class="open-AddBookDialog btn btn-info btn-xs" href="#addBookDialog">Bet</a>
                             </div>
 
 
@@ -106,7 +106,7 @@
 
 
                             <div class="col-sm-3 col-md-3">
-                                <a data-home="{{ s.home_team }}  {{ s.home_odds }}" data-hteam="{{ s.home_team }}" data-hodds="{{ s.home_odds }}" data-away="{{ s.away_team }} {{ s.away_odds }}" data-ateam="{{ s.away_team }}" data-aodds="{{ s.away_odds }}" title="Add this item" class="open-AddBookDialog btn btn-info btn-xs" href="#addBookDialog">View Score</a>
+                                <a data-home="{{ s.home_team }}  {{ s.home_odds }}" data-hteam="{{ s.home_team }}" data-hodds="{{ s.home_odds }}" data-overunder="{{ s.over_under }}" data-away="{{ s.away_team }} {{ s.away_odds }}" data-ateam="{{ s.away_team }}" data-aodds="{{ s.away_odds }}" title="Add this item" class="open-AddBookDialog btn btn-info btn-xs" href="#addBookDialog">View Score</a>
                             </div>
 
                             <!--<div class="col-sm-3 col-md-3">-->
@@ -145,7 +145,7 @@
 
 
                             <div class="col-sm-3 col-md-3">
-                                <a data-home="{{ s.home_team }}  {{ s.home_odds }}" data-hteam="{{ s.home_team }}" data-hodds="{{ s.home_odds }}" data-away="{{ s.away_team }} {{ s.away_odds }}" data-ateam="{{ s.away_team }}" data-aodds="{{ s.away_odds }}" title="Add this item" class="open-AddBookDialog btn btn-info btn-xs" href="#addBookDialog">View Score</a>
+                                <a data-home="{{ s.home_team }}  {{ s.home_odds }}" data-hteam="{{ s.home_team }}" data-hodds="{{ s.home_odds }}" data-overunder="{{ s.over_under }}" data-away="{{ s.away_team }} {{ s.away_odds }}" data-ateam="{{ s.away_team }}" data-aodds="{{ s.away_odds }}" title="Add this item" class="open-AddBookDialog btn btn-info btn-xs" href="#addBookDialog">View Score</a>
                             </div>
 
                             <!--<div class="col-sm-3 col-md-3">-->
@@ -203,6 +203,15 @@
 
               </section>
               <section class="row">
+              <div class="col-sm-12 col-md-12 text-center">
+                    <br>
+                    Over/Under:   <label id="lbltipAddedComment3">Option 2</label>
+              </div>
+
+
+
+              </section>
+              <section class="row">
                   <div class="col-xs-12" style="height:40px;"></div>
                   <div class="col-sm-6 col-md-6 text-center">
                     <label id="pickusrlabel">Against who?</label>
@@ -216,6 +225,20 @@
                                     <option value={{ s.username }}>{{ s.first_name }} {{ s.last_name }}</option>
                                     {% endif %}
                                     {% endfor %}
+                      </select>
+                  </div>
+
+              </section>
+
+              <section class="row">
+                  <div class="col-xs-12" style="height:40px;"></div>
+                  <div class="col-sm-6 col-md-6 text-center">
+                    <label id="typelabel">Bet Type</label>
+                  </div>
+                  <div class="col-sm-6 col-md-6 text-center">
+                      <select name="bettype" id="type-select" style="width: 100%" required>
+                                    <option selected="selected" value="even">Even</option>
+                                    <option value="overunder">Over / Under</option>
                       </select>
                   </div>
 
@@ -264,6 +287,9 @@
         var away = _self.data('away');
         var awayteam = _self.data('ateam');
         document.getElementById('lbltipAddedComment2').innerHTML = away;
+
+        var overunder = _self.data('overunder');
+        document.getElementById('lbltipAddedComment3').innerHTML = overunder;
 
 
         $("#betHome").val(hometeam);

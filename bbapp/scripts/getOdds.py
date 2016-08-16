@@ -35,6 +35,7 @@ def addOddsToGame(data,sport):
                     game.home_odds = dm['MATCH_ODDS']['home']
                     game.away_team = dm['away']
                     game.away_odds = dm['MATCH_ODDS']['away']
+                    game.over_under = float(str(dm['Over/Under']).replace("+","").replace("-",""))
                     game.date = today
                     game.gamekey = pkey
                     game.save()
@@ -44,6 +45,7 @@ def addOddsToGame(data,sport):
                     for gamt in q:
                         gamt.home_team = dm['home']
                         gamt.home_odds = dm['MATCH_ODDS']['home']
+                        gamt.over_under = float(str(dm['Over/Under']).replace("+","").replace("-",""))
                         gamt.away_team = dm['away']
                         gamt.away_odds = dm['MATCH_ODDS']['away']
                         gamt.save()
@@ -120,7 +122,7 @@ def getGames(sport):
                 if type in ['Handicap', 'Over/Under', 'MATCH_ODDS']:
                     edict[type] = sdict
 
-            # pprint(edict)
+            pprint(edict)
             games.append(edict)
 
 

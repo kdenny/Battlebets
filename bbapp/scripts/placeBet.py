@@ -26,7 +26,7 @@ from bbapp.models import *
 
 
 
-def makeBet(betselect, opponent, betamount, user1):
+def makeBet(betselect, opponent, betamount, bettype, user1):
 
     madebet = False
     # print("You selected a bet on {0} with {1} for {2}".format(betselect, opponent, betamount))
@@ -70,6 +70,7 @@ def makeBet(betselect, opponent, betamount, user1):
                                          bet_selection=bet_selection,
                                          user2=user2,
                                          bet_value=betamount,
+                                         bet_type=bettype,
                                          bet_status='Proposed')
 
         else:
@@ -77,6 +78,7 @@ def makeBet(betselect, opponent, betamount, user1):
             bet.game = gamestr
             bet.user1 = user1
             bet.bet_selection = bet_selection
+            bet.bet_type = bettype
             bet.user2 = user2
             bet.bet_value = betamount
             # bet.bet_odds = bet_odds
