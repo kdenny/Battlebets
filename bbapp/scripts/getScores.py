@@ -98,19 +98,36 @@ def fixScores(currentScores, sport):
                         new = 0
                         ## Update all bets with the winner of bet
                         if gbet.bet_status == 'Accepted':
-                            new = 1
-                            if gbet.bet_selection == gbet.game.home_team:
-                                if winp == 'Home':
+                            totalscore = float(gbet.game.home_score) + float(gbet.game.away_score)
+                            overunder = float(gbet.game.over_under)
+                            if gbet.bet_type == 'even':
+                                new = 1
+                                if gbet.bet_selection == gbet.game.home_team:
+                                    if winp == 'Home':
+                                        gbet.bet_status = 'user1win'
+                                        print("User 1 won bet")
+                                    else:
+                                        gbet.bet_status = 'user2win'
+                                        print("User 2 won bet")
+                                elif gbet.bet_selection == gbet.game.away_team:
+                                    if winp == 'Home':
+                                        gbet.bet_status = 'user2win'
+                                    else:
+                                        gbet.bet_status = 'user1win'
+                            elif gbet.bet_type == 'over':
+                                new = 1
+                                if totalscore > overunder:
                                     gbet.bet_status = 'user1win'
-                                    print("User 1 won bet")
                                 else:
                                     gbet.bet_status = 'user2win'
-                                    print("User 2 won bet")
-                            elif gbet.bet_selection == gbet.game.away_team:
-                                if winp == 'Home':
-                                    gbet.bet_status = 'user2win'
-                                else:
+                            elif gbet.bet_type == 'under':
+                                new = 1
+                                if totalscore < overunder:
                                     gbet.bet_status = 'user1win'
+                                else:
+                                    gbet.bet_status = 'user2win'
+
+
 
                         gbet.changed_date = datetime.now()
                         gbet.save()

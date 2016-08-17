@@ -54,7 +54,13 @@
             <h2 class="featurette-heading">Proposal From {{ s.sender }}
                 <!--<span class="text-muted">Will Catch Your Eye</span>-->
             </h2>
-            <p class="lead">{{s.sender}} wants to bet ${{ s.bet.bet_value }} on {{ s.bet.bet_selection }} in {{ s.bet.game.away_team}} at {{ s.bet.game.home_team}} on {{ s.bet.game.date}} </p>
+            <p class="lead">{{s.sender}} wants to bet ${{ s.bet.bet_value }} on {{ s.bet.bet_selection }} in {{ s.bet.game.away_team}} at {{ s.bet.game.home_team}} on {{ s.bet.game.date}} <br> <br>
+                {% if s.bet.bet_type != 'even' %}
+                Bet Type: {{ s.bet.bet_type }} {{ s.bet.game.over_under }}
+                {% else %}}
+                Bet Type: even bet
+                {% endif %}
+            </p>
             <p>
                 <form id="status_form" method="post" action="/bbapp/view_proposals/">
                 {% csrf_token %}
