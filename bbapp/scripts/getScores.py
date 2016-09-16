@@ -25,7 +25,11 @@ from datetime import datetime, timedelta
 
 def fixScores(currentScores, sport):
 
-    longNames = ['San', 'St.', 'NY', 'LA', 'Tampa', 'Chicago', 'Kansas']
+    longNames = ['San', 'St.', 'Tampa', 'Green', 'Kansas']
+
+    longSport = {}
+    longSport['mlb'] = ['NY', 'Chicago', 'LA']
+    longSport['nfl'] = ['NY', 'New', 'Los']
 
     currentTime = datetime.now()
     currentHour = currentTime.hour
@@ -37,19 +41,19 @@ def fixScores(currentScores, sport):
 
     today = currentTime.strftime("%m/%d/%Y")
 
-    if currentHour < 12:
-        yesterday = datetime.now() - timedelta(days=1)
-        print("Showing yesterday's games")
-        today = yesterday.strftime("%m/%d/%Y")
+    # if currentHour < 12:
+    #     yesterday = datetime.now() - timedelta(days=1)
+    #     print("Showing yesterday's games")
+    #     today = yesterday.strftime("%m/%d/%Y")
 
-    elif currentHour >= 19:
+    if currentHour >= 19:
         print ("It's game time!")
 
     for cs in currentScores:
         pprint(cs)
-        pkey = '{0}-{1}-{2}'.format(cs['Home_Short'], cs['Away_Short'], today)
+        pkey = '{3}-{0}-{1}-{2}'.format(cs['Home_Short'], cs['Away_Short'], today, sport.lower())
 
-        q = Game.objects.filter(gamekey=pkey)
+        q = Game.objects.filter(home_short=cs['Home_Short'], away_short=cs['Away_Short'])
 
         if len(q) == 0:
             ## Build game object
@@ -77,6 +81,16 @@ def fixScores(currentScores, sport):
                     if cs['Status'] == 'Upcoming':
                         gamt.game_time = cs['Game Time']
                     gamt.save()
+
+                if gamt.status == 'In Progress':
+
+                    in_process_bets = Bet.objects.filter(game=pkey)
+
+                    for ipb in in_process_bets:
+                        ipb.bet_status = 'expired'
+                        ipb.changed_date = datetime.now()
+                        ipb.save()
+
 
                 if cs['Status'] == 'Final':
                     ## Process games that have ended
@@ -127,6 +141,20 @@ def fixScores(currentScores, sport):
                                 else:
                                     gbet.bet_status = 'user2win'
 
+                            elif gbet.bet_type == 'home_spread':
+                                new = 1
+                                if float(gbet.game.home_score) + float(gbet.game.home_spread) > float(gbet.game.away_score):
+                                    gbet.bet_status = 'user1win'
+                                else:
+                                    gbet.bet_status = 'user2win'
+
+                            elif gbet.bet_type == 'away_spread':
+                                new = 1
+                                if float(gbet.game.away_score) + float(gbet.game.away_spread) > float(gbet.game.home_score):
+                                    gbet.bet_status = 'user1win'
+                                else:
+                                    gbet.bet_status = 'user2win'
+
 
 
                         gbet.changed_date = datetime.now()
@@ -164,7 +192,7 @@ def fixScores(currentScores, sport):
 
 
 
-def request():
+def request(league):
     """Prepares OAuth authentication and sends the request to the API.
 
     Args:
@@ -179,8 +207,7 @@ def request():
         urllib2.HTTPError: An error occurs from the HTTP request.
     """
     sport = 'baseball'
-    league = 'MLB'
-    url = 'http://espn.go.com/mlb/bottomline/scores'.format(league)
+    url = 'http://espn.go.com/{0}/bottomline/scores'.format(league)
 
 
     # print u'Querying {0} ...'.format(url)
@@ -200,10 +227,14 @@ def request():
     return soup
 
 
-def chefThatSoup(soup):
+def chefThatSoup(soup, league):
 
 
-    longNames = ['San', 'St.', 'NY', 'LA', 'Tampa', 'Chicago', 'Kansas']
+    longNames = ['San', 'St.', 'Tampa', 'Green', 'Kansas']
+
+    longSport = {}
+    longSport['mlb'] = ['NY', 'Chicago', 'LA']
+    longSport['nfl'] = ['NY', 'New', 'Los']
 
     gameScores = []
 
@@ -221,15 +252,15 @@ def chefThatSoup(soup):
 
         extracount = 0
 
-        # print(gameN)
+        # pprint(gameN)
         # print("")
 
-        if gameN[0].split('=')[1] != '120&amp;mlb;_s_stamp':
+        if gameN[0].split('=')[1] != '120&amp;{0};_s_stamp'.format(league.lower()):
 
 
             ## Process Away team
 
-            if gameN[0].split('=')[1].replace("^","") not in longNames:
+            if gameN[0].split('=')[1].replace("^","") not in longNames and gameN[0].split('=')[1].replace("^","") not in longSport[league.lower()]:
                 gameR['Away_Team'] = gameN[0].split('=')[1]
             else:
                 gameR['Away_Team'] = gameN[0].split('=')[1] + ' ' + gameN[1]
@@ -254,19 +285,21 @@ def chefThatSoup(soup):
             if gameR['Status'] == 'In Progress':
                 atloc = 4 + extracount
 
-                if gameN[atloc].replace('^','') not in longNames:
+
+
+                if gameN[atloc].replace('^','') not in longNames and gameN[atloc].replace('^','') not in longSport[league.lower()]:
                     gameR['Home_Team'] = gameN[atloc]
                     gameR['Home_Score'] = gameN[(atloc+1)]
-                    if len(gameN) > (atloc+3):
-                        if len(gameN[(atloc+3)].split(")")) > 0:
-                            gameR['Inning'] = gameN[(atloc+2)].replace("(","") + ' ' + gameN[(atloc+3)].split(")")[0]
+                    # if len(gameN) > (atloc+3):
+                    #     if len(gameN[(atloc+3)].split(")")) > 0:
+                    #         gameR['Inning'] = gameN[(atloc+2)].replace("(","") + ' ' + gameN[(atloc+3)].split(")")[0]
 
                 else:
                     gameR['Home_Team'] = gameN[atloc] + ' ' + gameN[(atloc+1)]
                     gameR['Home_Score'] = gameN[(atloc+2)]
-                    if len(gameN) > (atloc+4):
-                        if len(gameN[(atloc+4)].split(")")) > 0:
-                            gameR['Inning'] = gameN[(atloc+3)].replace("(","") + ' ' + gameN[(atloc+4)].split(")")[0]
+                    # if len(gameN) > (atloc+4):
+                    #     if len(gameN[(atloc+4)].split(")")) > 0:
+                    #         gameR['Inning'] = gameN[(atloc+3)].replace("(","") + ' ' + gameN[(atloc+4)].split(")")[0]
 
 
                 if 'Inning' not in gameR:
@@ -280,14 +313,13 @@ def chefThatSoup(soup):
             else:
                 atloc = 2 + extracount
 
-                if str(gameN[atloc]).replace("^","") not in longNames:
+                if str(gameN[atloc]).replace("^","") not in longNames and str(gameN[atloc]).replace("^","") not in longSport[league.lower()]:
                     gameR['Home_Team'] = gameN[atloc]
                     gameR['Game Time'] = gameN[(atloc+1)].replace("(","") + ' ' + gameN[(atloc+2)] + ' ' + gameN[(atloc+3)].split(")")[0]
 
                 else:
                     gameR['Home_Team'] = gameN[atloc] + ' ' + gameN[(atloc+1)]
                     gameR['Game Time'] = gameN[(atloc+2)].replace("(","") + ' ' + gameN[(atloc+3)] + ' ' + gameN[(atloc+4)].split(")")[0]
-
 
 
             if '^' in gameR['Home_Team']:
@@ -308,9 +340,11 @@ def chefThatSoup(soup):
     return gameScores
 
 
-def processScores(scores):
+def processScores(scores, league):
 
-    shortTeams = {
+    shortTeams = {}
+
+    shortTeams['mlb'] = {
         'Minnesota' : 'MIN',
         'NY Yankees' : 'NYY',
         'Tampa Bay' : 'TB',
@@ -343,26 +377,73 @@ def processScores(scores):
         'Seattle' : 'SEA'
         }
 
+    shortTeams['nfl'] = {
+        'Minnesota' : 'MIN',
+        'NY Jets' : 'NYJ',
+        'Tampa Bay' : 'TB',
+        'Baltimore' : 'BAL',
+        'Toronto' : 'TOR',
+        'Green Bay' : 'GB',
+        'Chicago' : 'CHI',
+        'Cleveland' : 'CLE',
+        'Detroit' : 'DET',
+        'Washington' : 'WAS',
+        'Milwaukee' : 'MIL',
+        'San Diego' : 'SD',
+        'Cincinnati' : 'CIN',
+        'Arizona' : 'AZ',
+        'Denver' : 'DEN',
+        'Miami' : 'MIA',
+        'Houston' : 'HOU',
+        'Kansas City' : 'KC',
+        'NY Giants' : 'NYG',
+        'Atlanta' : 'ATL',
+        'Los Angeles' : 'LA',
+        'Pittsburgh' : 'PIT',
+        'New England' : 'NE',
+        'Dallas' : 'DAL',
+        'Oakland' : 'OAK',
+        'Jacksonville' : 'JAX',
+        'San Francisco' : 'SFO',
+        'St. Louis' : 'STL',
+        'Philadelphia' : 'PHL',
+        'Tennessee' : 'TEN',
+        'Carolina' : 'CAR',
+        'New Orleans' : 'NO',
+        'Buffalo' : 'BUF',
+        'Indianapolis' : 'IND',
+        'Seattle' : 'SEA'
+        }
+
+
+
+
     for sc in scores:
-        sc['Away_Short'] = shortTeams[sc['Away_Team'].replace('^','')]
-        sc['Home_Short'] = shortTeams[sc['Home_Team'].replace('^','')]
+        sc['Away_Short'] = shortTeams[league.lower()][sc['Away_Team'].replace('^','')]
+        sc['Home_Short'] = shortTeams[league.lower()][sc['Home_Team'].replace('^','')]
 
 
     return scores
-
-
 
 
 
 def doScoresScrape():
 
-    re = request()
+    league = 'nfl'
 
-    scoresD = chefThatSoup(re)
+    re = request(league)
 
-    scores = processScores(scoresD)
+    scoresD = chefThatSoup(re, league)
+
+    scores = processScores(scoresD, league)
+
+    pprint(scores)
 
     return scores
+
+
+
+
 
 
 

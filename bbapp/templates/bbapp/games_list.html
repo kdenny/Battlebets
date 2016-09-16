@@ -39,9 +39,11 @@
     <div class="container">
     <section class="row">
         <div class="col-sm-12 col-md-12 text-center">
+
             <div class="panel panel-default">
-                <div class="panel-heading">MLB games</div>
+                <div class="panel-heading">NFL games</div>
                 <div class="panel-body">
+
 
                     {% for s in games %}
 
@@ -72,7 +74,7 @@
                             </div>
 
                             <div class="col-sm-3 col-md-3">
-                                <a data-home="{{ s.home_team }}  {{ s.home_odds }}" data-hteam="{{ s.home_team }}" data-hodds="{{ s.home_odds }}" data-away="{{ s.away_team }} {{ s.away_odds }}" data-overunder="{{ s.over_under }}" data-ateam="{{ s.away_team }}" data-aodds="{{ s.away_odds }}" title="Add this item" class="open-AddBookDialog btn btn-info btn-xs" href="#addBookDialog">Bet</a>
+                                <a data-home="{{ s.home_team }}  {{ s.home_odds }}" data-hteam="{{ s.home_team }}" data-hodds="{{ s.home_odds }}" data-hspread="{{ s.home_spread }}" data-aspread="{{ s.away_spread }}" data-away="{{ s.away_team }} {{ s.away_odds }}" data-overunder="{{ s.over_under }}" data-ateam="{{ s.away_team }}" data-aodds="{{ s.away_odds }}" title="Add this item" class="open-AddBookDialog btn btn-info btn-xs" href="#addBookDialog">Bet</a>
                             </div>
 
 
@@ -145,7 +147,7 @@
 
 
                             <div class="col-sm-3 col-md-3">
-                                <a data-home="{{ s.home_team }}  {{ s.home_odds }}" data-hteam="{{ s.home_team }}" data-hodds="{{ s.home_odds }}" data-overunder="{{ s.over_under }}" data-away="{{ s.away_team }} {{ s.away_odds }}" data-ateam="{{ s.away_team }}" data-aodds="{{ s.away_odds }}" title="Add this item" class="open-AddBookDialog btn btn-info btn-xs" href="#addBookDialog">View Score</a>
+                                <a data-home="{{ s.home_team }}  {{ s.home_odds }}" data-hteam="{{ s.home_team }}" data-hodds="{{ s.home_odds }}" data-hspread="{{ s.home_spread }}" data-aspread="{{ s.away_spread }}" data-overunder="{{ s.over_under }}" data-away="{{ s.away_team }} {{ s.away_odds }}" data-ateam="{{ s.away_team }}" data-aodds="{{ s.away_odds }}" title="Add this item" class="open-AddBookDialog btn btn-info btn-xs" href="#addBookDialog">View Score</a>
                             </div>
 
                             <!--<div class="col-sm-3 col-md-3">-->
@@ -187,6 +189,8 @@
                   <div class="radio">
                       <label id="lbltipAddedComment">Option 1</label>
                       <br>
+                      <label id="lbltipAddedComment4">Option 2</label>
+                      <br>
                       <input type="radio" name="betSelection" id="betHome" value="home" checked>
                   </div>
               </div>
@@ -195,6 +199,8 @@
               <div class="col-sm-6 col-md-6 text-center">
                   <div class="radio">
                       <label id="lbltipAddedComment2">Option 2</label>
+                      <br>
+                      <label id="lbltipAddedComment5">Option 2</label>
                       <br>
                       <input type="radio" name="betSelection" id="betAway" value="away">
                   </div>
@@ -237,7 +243,8 @@
                   </div>
                   <div class="col-sm-6 col-md-6 text-center">
                       <select name="bettype" id="type-select" style="width: 100%" required>
-                                    <option selected="selected" value="even">Even</option>
+                                    <option selected="selected" value="spread">Spread</option>
+                                    <option value="even">Money Line</option>
                                     <option value="over">Over</option>
                                     <option value="under">Under</option>
                       </select>
@@ -291,6 +298,16 @@
 
         var overunder = _self.data('overunder');
         document.getElementById('lbltipAddedComment3').innerHTML = overunder;
+
+        var home_spread = _self.data('hspread');
+        console.log(home_spread);
+        document.getElementById('lbltipAddedComment4').innerHTML = '( ' + home_spread + ' )';
+//        document.getElementById('lbltipAddedComment4').innerHTML = home_spread;
+
+        var away_spread = _self.data('aspread');
+        document.getElementById('lbltipAddedComment5').innerHTML = '( ' + away_spread + ' )';
+
+//        document.getElementById('lbltipAddedComment5').innerHTML = away_spread;
 
 
         $("#betHome").val(hometeam);

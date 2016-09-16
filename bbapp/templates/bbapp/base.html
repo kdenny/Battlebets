@@ -140,7 +140,7 @@
 
               <li class="dropdown">
 
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">{% unseen_notifications user %}
+                <a style="color: red; font-weight: bold;" class="dropdown-toggle" data-toggle="dropdown" href="#">{% unseen_notifications user %}
                 <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     {% for notif in user.notifications.all %}

@@ -22,7 +22,7 @@ from django.http import JsonResponse
 from rest_framework import viewsets, mixins
 
 # Scripts
-from scripts.getOdds import getGames, addOddsToGame
+from scripts.getOdds import getGames, addOddsToGame, getNFLGames
 from scripts.getScores import doScoresScrape, fixScores
 from scripts.placeBet import makeBet
 
@@ -56,7 +56,11 @@ def view_proposals(request):
 
     declined_proposals = Notification.objects.filter(user=request.user,bet__user1=request.user,bet__bet_status='Declined',seen=False)
 
-    gamedata = { "proposals" : bet_proposals, "user_placed" : user_placed_bets, "accepted" : user_accepted_bets, "declined" : declined_proposals}
+    gamedata = { "proposals" : bet_proposals,
+                 "user_placed" : user_placed_bets,
+                 "accepted" : user_accepted_bets,
+                 "declined" : declined_proposals
+                 }
 
     all_user_notifications = Notification.objects.filter(user=request.user)
 
@@ -146,7 +150,7 @@ def profile(request):
 def games_list(request):
 
     leagues = [
-                'MLB',
+                'NFL',
                 # 'PN-MLS',
                 # 'WNBA'
                # 'PN_COPA_AMERICA',
@@ -162,7 +166,14 @@ def games_list(request):
         fixScores(currentScores, sport)
 
         ## Get odds
-        data = getGames(sport)
+
+        if sport.lower() != 'nfl':
+            data = getGames(sport)
+
+        else:
+            data = getNFLGames()
+
+
         addOddsToGame(data,sport)
 
         currentTime = datetime.now()
@@ -176,9 +187,11 @@ def games_list(request):
             yesterday = datetime.now() - timedelta(days=1)
             print("Showing yesterday's games")
             today = yesterday.strftime("%m/%d/%Y")
-        games = Game.objects.filter(date=today)
+        games = Game.objects.filter(league='NFL')
+        for g in games:
+            pprint(g)
+        pprint(games)
         users = User.objects.all()
-        print(users)
         gamedata = { "games" : games, "league" : info, "users" : users}
 
         resp =  render_to_response("bbapp/games_list.html", gamedata, context_instance=RequestContext(request))

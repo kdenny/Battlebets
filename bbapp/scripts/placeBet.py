@@ -33,12 +33,11 @@ def makeBet(betselect, opponent, betamount, bettype, user1):
 
     today = datetime.now().strftime("%m/%d/%Y")
 
-    ishome = Game.objects.filter(home_team=betselect,date=today)
-    isaway = Game.objects.filter(away_team=betselect,date=today)
+    ishome = Game.objects.filter(home_team=str(betselect))
+    isaway = Game.objects.filter(away_team=str(betselect))
 
     opponent_name = User.objects.filter(username=opponent)
     # print("Length of opponent name is {0}".format(len(opponent_name)))
-    gamestr = ''
 
     if len(ishome) == 1:
         for r in ishome:
@@ -50,7 +49,7 @@ def makeBet(betselect, opponent, betamount, bettype, user1):
 
     else:
         for r in isaway:
-            if madebet == False and r.date == today:
+            if madebet == False:
                 gamestr = r
                 bet_selection = r.away_team
                 # bet_odds = r.away_odds
