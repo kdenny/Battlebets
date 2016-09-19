@@ -37,7 +37,8 @@ def addOddsToGame(data,sport):
                         game.home_odds = dm['MATCH_ODDS']['home']
                         game.away_team = dm['away']
                         game.away_odds = dm['MATCH_ODDS']['away']
-                        game.over_under = float(str(dm['Over/Under']).replace("+","").replace("-",""))
+                        if 'Over/Under' in dm:
+                            game.over_under = float(str(dm['Over/Under']).replace("+","").replace("-",""))
                         game.date = today
                         game.gamekey = pkey
                         game.save()
@@ -47,7 +48,8 @@ def addOddsToGame(data,sport):
                         for gamt in q:
                             gamt.home_team = dm['home']
                             gamt.home_odds = dm['MATCH_ODDS']['home']
-                            gamt.over_under = float(str(dm['Over/Under']).replace("+","").replace("-",""))
+                            if 'Over/Under' in dm:
+                                gamt.over_under = float(str(dm['Over/Under']).replace("+","").replace("-",""))
                             gamt.away_team = dm['away']
                             gamt.away_odds = dm['MATCH_ODDS']['away']
                             gamt.save()
@@ -59,6 +61,7 @@ def addOddsToGame(data,sport):
             'New York Jets' : 'NYJ',
             'Buffalo Bills' : 'BUF',
             'New Orleans Saints' : 'NO',
+            'Seattle Seahawks' : 'SEA',
             'New York Giants' : 'NYG',
             'Dallas Cowboys' : 'DAL',
             'Washington Redskins' : 'WAS',
@@ -72,6 +75,8 @@ def addOddsToGame(data,sport):
             'Detroit Lions' : 'DET',
             'Kansas City Chiefs' : 'KC',
             'Houston Texans' : 'HOU',
+            'Los Angeles Rams' : 'LA',
+            'Indianapolis Colts' : 'IND',
             'Tampa Bay Buccaneers' : 'TB',
             'Arizona Cardinals' : 'AZ',
             'Atlanta Falcons' : 'ATL',
@@ -107,7 +112,8 @@ def addOddsToGame(data,sport):
                         game.away_short = dg['away_short']
                         game.away_odds = dg['away_odds']
                         game.away_spread = dg['away_spread']
-                        game.over_under = float(str(dg['over-under']))
+                        if 'over-under' in dg:
+                            game.over_under = float(str(dg['over-under']))
                         game.date = dg['date']
                         game.gamekey = pkey
                         game.save()
@@ -124,7 +130,8 @@ def addOddsToGame(data,sport):
                         gamt.away_odds = dg['away_odds']
                         gamt.away_short = dg['away_short']
                         gamt.away_spread = dg['away_spread']
-                        gamt.over_under = float(str(dg['over-under']))
+                        if 'over-under' in dg:
+                            gamt.over_under = float(str(dg['over-under']))
                         gamt.save()
 
 
@@ -358,9 +365,10 @@ def getNFLGames():
 
 
                 time_txt = str(allsub.find_all('Time'))
-                over_under_txt = str(allsub.find_all('Line')[2])
+                if len(allsub.find_all('Line')) > 2:
+                    over_under_txt = str(allsub.find_all('Line')[2])
 
-                game['over-under'] = over_under_txt[over_under_txt.index('NUMBER="')+8:over_under_txt.index('TS="')-2].replace("\xc2\xbd",".5")
+                    game['over-under'] = over_under_txt[over_under_txt.index('NUMBER="')+8:over_under_txt.index('TS="')-2].replace("\xc2\xbd",".5")
 
                 game['time'] = time_txt[time_txt.index('TTEXT="')+7:time_txt.index('/>')-1]
 
