@@ -70,6 +70,7 @@ def addOddsToGame(data,sport):
             'San Francisco 49ers' : 'SF',
             'Carolina Panthers' : 'CAR',
             'Cincinnati Bengals' : 'CIN',
+            'New England Patriots' : 'NE',
             'Pittsburgh Steelers' : 'PIT',
             'Baltimore Ravens' : 'BAL',
             'Cleveland Browns' : 'CLE',
