@@ -41,6 +41,7 @@ def addOddsToGame(data,sport):
                             game.over_under = float(str(dm['Over/Under']).replace("+","").replace("-",""))
                         game.date = today
                         game.gamekey = pkey
+                        game.status = 'Upcoming'
                         game.save()
 
                     else:
@@ -52,6 +53,7 @@ def addOddsToGame(data,sport):
                                 gamt.over_under = float(str(dm['Over/Under']).replace("+","").replace("-",""))
                             gamt.away_team = dm['away']
                             gamt.away_odds = dm['MATCH_ODDS']['away']
+                            gamt.status = 'Upcoming'
                             gamt.save()
 
     else:
@@ -77,6 +79,7 @@ def addOddsToGame(data,sport):
             'Houston Texans' : 'HOU',
             'Los Angeles Rams' : 'LA',
             'Indianapolis Colts' : 'IND',
+            'Miami Dolphins' : 'MIA',
             'Tampa Bay Buccaneers' : 'TB',
             'Arizona Cardinals' : 'AZ',
             'Atlanta Falcons' : 'ATL',
@@ -116,6 +119,7 @@ def addOddsToGame(data,sport):
                             game.over_under = float(str(dg['over-under']))
                         game.date = dg['date']
                         game.gamekey = pkey
+                        game.status = 'Upcoming'
                         game.save()
 
                 else:
@@ -129,6 +133,7 @@ def addOddsToGame(data,sport):
                         gamt.away_team = dg['away']
                         gamt.away_odds = dg['away_odds']
                         gamt.away_short = dg['away_short']
+                        gamt.status = 'Upcoming'
                         gamt.away_spread = dg['away_spread']
                         if 'over-under' in dg:
                             gamt.over_under = float(str(dg['over-under']))
@@ -373,6 +378,7 @@ def getNFLGames():
                 game['time'] = time_txt[time_txt.index('TTEXT="')+7:time_txt.index('/>')-1]
 
                 game['date'] = currentdate
+
 
                 games.append(game)
 
