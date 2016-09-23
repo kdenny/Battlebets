@@ -25,7 +25,7 @@ def addOddsToGame(data,sport):
         for dm in data:
                 ## Iterate through odds scraping results
                 if 'home_short' in dm and 'away_short' in dm:
-                    pkey = '{3}-{0}-{1}-{2}'.format(dm['home_short'], dm['away_short'], today, sport.lower())
+                    pkey = '{3}-{0}-{1}-{2}'.format(dm['home_short'], dm['away_short'], dm['date'], sport.lower())
 
                     q = Game.objects.filter(gamekey=pkey)
 
@@ -69,6 +69,7 @@ def addOddsToGame(data,sport):
             'Washington Redskins' : 'WAS',
             'San Francisco 49ers' : 'SF',
             'Carolina Panthers' : 'CAR',
+            'Denver Broncos' : 'DEN',
             'Cincinnati Bengals' : 'CIN',
             'Pittsburgh Steelers' : 'PIT',
             'Baltimore Ravens' : 'BAL',
@@ -99,9 +100,9 @@ def addOddsToGame(data,sport):
             pprint(dg)
 
             if 'home_short' in dg and 'away_short' in dg:
-                pkey = '{3}-{0}-{1}-{2}'.format(dg['home_short'], dg['away_short'], today, sport.lower())
+                pkey = '{3}-{0}-{1}-{2}'.format(dg['home_short'], dg['away_short'], dg['date'], sport.lower())
 
-                q = Game.objects.filter(gamekey=pkey)
+                q = Game.objects.filter(gamekey=pkey, date=dg['date'])
 
                 if len(q) == 0:
                         ## Build game object from odds scraping
@@ -301,6 +302,26 @@ def getNFLGames():
     Raises:
         urllib2.HTTPError: An error occurs from the HTTP request.
     """
+
+    dateDict = {
+        'Wk3' : {
+            'start' : 'Sep 22',
+            'end' : 'Sep 28'
+        },
+        'Wk4' : {
+            'start' : 'Sep 29',
+            'end' : 'Oct 5'
+        },
+        'Wk5' : {
+            'start' : 'Oct 6',
+            'end' : 'Oct 12'
+        },
+        'Wk6' : {
+            'start' : 'Oct 13',
+            'end' : 'Oct 19'
+        }
+    }
+
     # url_params = url_params or {}
     # url = 'https://{0}{1}{2}'.format(host, urllib.quote(path.encode('utf8')))
 
@@ -377,7 +398,29 @@ def getNFLGames():
 
                 game['time'] = time_txt[time_txt.index('TTEXT="')+7:time_txt.index('/>')-1]
 
-                game['date'] = currentdate
+                dparts = currentdate.split(",")
+                if len(dparts) >= 2:
+                    rdate = dparts[1].strip()
+                    print(rdate)
+                    gmonth = rdate.split(" ")[0]
+                    gday = rdate.split(" ")[1]
+                    for dt in dateDict:
+                        stmonth = dateDict[dt]['start'].split(" ")[0]
+                        endmonth = dateDict[dt]['end'].split(" ")[0]
+                        stday = dateDict[dt]['start'].split(" ")[1]
+                        endday = dateDict[dt]['end'].split(" ")[1]
+                        if stmonth == endmonth:
+                            if gday >= stday and gday <= endday:
+                                game['date'] = dt
+                        else:
+                            if gday >= stday:
+                                game['date'] = dt
+
+
+
+                    print(game['date'])
+                else:
+                    game['date'] = currentdate
 
 
                 games.append(game)

@@ -34,12 +34,46 @@ def fixScores(currentScores, sport):
     currentTime = datetime.now()
     currentHour = currentTime.hour
     currentDay = currentTime.day
+    currentMonth = currentTime.month
+
+    dateDict = {
+        'Wk3' : {
+            'start' : '9/22',
+            'end' : '9/28'
+        },
+        'Wk4' : {
+            'start' : '9/29',
+            'end' : '10/5'
+        },
+        'Wk5' : {
+            'start' : '10/6',
+            'end' : '10/12'
+        },
+        'Wk6' : {
+            'start' : '10/13',
+            'end' : '10/19'
+        }
+    }
 
 
     print("")
     print("Current hour is {0}".format(currentHour))
 
     today = currentTime.strftime("%m/%d/%Y")
+
+    if sport == 'nfl':
+
+        for dd in dateDict:
+            dmonthst = dateDict[dd]['start'].split("/")[0]
+            dmonthend = dateDict[dd]['end'].split("/")[0]
+            dayst = dateDict[dd]['start'].split("/")[1]
+            dayend = dateDict[dd]['end'].split("/")[1]
+            if dmonthst == dmonthend:
+                if str(currentMonth) == str(dmonthst):
+                    if int(currentDay) >= int(dayst) and int(currentDay) <= int(dayend):
+                        today = dd
+
+
 
     # if currentHour < 12:
     #     yesterday = datetime.now() - timedelta(days=1)
