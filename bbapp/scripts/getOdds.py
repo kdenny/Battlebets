@@ -71,6 +71,7 @@ def addOddsToGame(data,sport):
             'Carolina Panthers' : 'CAR',
             'Denver Broncos' : 'DEN',
             'Cincinnati Bengals' : 'CIN',
+            'New England Patriots' : 'NE',
             'Pittsburgh Steelers' : 'PIT',
             'Baltimore Ravens' : 'BAL',
             'Cleveland Browns' : 'CLE',
