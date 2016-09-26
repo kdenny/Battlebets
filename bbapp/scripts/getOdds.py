@@ -418,8 +418,6 @@ def getNFLGames():
                                 game['date'] = dt
 
 
-
-                    print(game['date'])
                 else:
                     game['date'] = currentdate
 
