@@ -414,8 +414,9 @@ def getNFLGames():
                             if gday >= stday and gday <= endday:
                                 game['date'] = dt
                         else:
-                            if gday >= stday:
+                            if gday >= stday or gday <= endday:
                                 game['date'] = dt
+
 
 
                 else:
